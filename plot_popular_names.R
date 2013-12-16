@@ -1,82 +1,58 @@
 #From https://github.com/jofusa/ssa-baby-names
 
 library(ggplot2)
-
-#load
-names<-read.csv("veri/populer_isimler.csv", header = TRUE)
-names[,4]<-as.character(names$female)
-names[,3]<-as.character(names$male)
+source("name_functions.R")
 
 ###Single Female Name#####
-nm<-"ECRİN" #Enter Female Name
+nm<-"DERYA" #Enter Female Name
 
-+geom_line(aes(group=Female),colour="#431600",alpha=0.1)
-
-p<-  ggplot(names,aes(x=year,y=rank)) 
-p <- p + ylim(max(names$rank),min(names$rank)) # Flip the Y-Axis
-p <- p  + geom_line(data = names[which(names$female == nm),], aes(group=female, colour = female), alpha = 1, size = 2)
+p<- ggplot(names,aes(x=year,y=rank))+ 
+    ylim(max(names$rank),min(names$rank)) + # Flip the Y axis
+    geom_line(data = names[which(names$female == nm),], aes(group=female, colour = female), alpha = 1, size = 1) + 
+    ylab("Sıralama") + xlab("Yıl") + ggtitle(nm) + 
+    theme(legend.position = "none") 
 p
-#+ opts(title = 'Popularity of the Female Name')+ opts(axis.text.x=theme_text(angle=-45),hjust=0)
-p
-#            Set up ggplot object                  reverse the Y-axis                         Plot the Specific Name you highligted                                                                 Plot All names with low alpha -- a little too much Noise              Title                                           Angle X-Axis Text
-p<-ggplot(names,aes(x=year,y=rank)) + ylim(max(names$rank),min(names$rank)) + geom_line(data = names[which(names$female == nm),], aes(group=female, colour = female), alpha = 1, size = 2)+geom_line(aes(group=female),colour="#431600",alpha=0.1)
-#+ opts(title = 'Popularity of the Female Name')+ opts(axis.text.x=theme_text(angle=-45),hjust=0)
-p
-
-
 
 ####Single Male Name####
 nm<-c("AYAZ")
-p<-ggplot(names,aes(x=year,y=rank)) + ylim(max(names$rank),min(names$rank)) + geom_line(data = names[which(names$male == nm),], aes(group=male),colour = "Blue", alpha = 1)+geom_line(aes(group=male),colour="#431600",alpha=0.06)
-#+ opts(title = nm)+ opts(axis.text.x=theme_text(angle=-70),hjust=0)
+p<- ggplot(names,aes(x=year,y=rank)) + 
+    ylim(max(names$rank),min(names$rank)) + 
+    geom_line(data = names[which(names$male == nm),], aes(group=male),colour = "Blue", alpha = 1) + 
+    ylab("Sıralama") + xlab("Yıl") + ggtitle(nm) + 
+    theme(legend.position = "none") 
 p
 
 ###MULTIPLE PEOPLE####
-
 ###MALE####
-top_names<-rownames(table(names$male))[as.numeric(table(names$male))>11]
+
+top_names<-rownames(table(names$male))[as.numeric(table(names$male))>8]
+#top_names<-c("YUNUS","EGE","FURKAN","YUSUF")  
 subset_data<-names[which(names$male %in% top_names),]
-#
-#top_names<-c("YUNUS","EGE","FURKAN","YUSUF")
-p<-  ggplot(subset_data,aes(x=year,y=rank)) + ylim(max(names$rank),min(names$rank))
-p <- p + geom_line(data =subset_data , aes(group=male, colour = male), alpha = 1, size = 1)
-#p <- p + opts(title = "Male Baby Name Popularity Since 1950")
-p <- p + facet_wrap(~male)
-p
+
+
+p<- ggplot(subset_data,aes(x=year,y=rank)) + 
+    geom_line(aes(group=male, colour =male_rank_change), alpha = 1, size = 1) + 
+    ylab("Sıralama") + xlab("Yıl") +
+    scale_x_continuous(expand = c(0,0), breaks=c(1960,1980,2000,2012)) + scale_y_reverse(expand=c(0,1),breaks=c(1,20,40,60,80,100)) +
+    facet_wrap(~male, ncol =6) +
+    scale_colour_gradient(low="red", high="green1", name = "Sıralama\nDeğişimi") 
+#p
+ggsave(file="./grafikler/erkek_isim_trend.svg", plot=p, width=12, height=30, limitsize=FALSE)
 
 #FEMALE
-top_names<-rownames(table(names$female))[as.numeric(table(names$female))>2]
+top_names<-rownames(table(names$female))[as.numeric(table(names$female))>9]
 subset_data<-names[which(names$female %in% top_names),]
-#
-#top_names<-c("YUNUS","EGE","FURKAN","YUSUF")
-p<-  ggplot(subset_data,aes(x=year,y=rank)) + ylim(max(names$rank),min(names$rank))
-p <- p + geom_line(data =subset_data ,aes(group=female, colour = female), alpha = 1, size = 1)
-#p <- p + opts(title = "Male Baby Name Popularity Since 1950")
-p <- p + facet_wrap(~female)
-p
+
+p<- ggplot(subset_data,aes(x=year,y=rank)) + 
+    geom_line(aes(group=female, colour = female_rank_change), alpha = 1, size = 1) + 
+    ylab("Sıralama") + xlab("Yıl") +
+    scale_x_continuous(expand = c(0,0), breaks=c(1960,1980,2000,2012)) + scale_y_reverse(expand=c(0,1),breaks=c(1,20,40,60,80,100)) +
+    facet_wrap(~female, ncol =6) +
+    scale_colour_gradient(low="red", high="green1", name = "Sıralama\nDeğişimi") 
+#p
+ggsave(file="./grafikler/kadin_isim_trend.svg", plot=p, width=12, height=30, limitsize=FALSE)
 
 
-p
-+ opts(axis.text.x=theme_text(angle=-70),hjust=0)
-p
-occurance_in_the_list<-as.data.frame.table(names$male)
-occurance_in_the_list[names(occurance_in_the_list)>5]
-
-
-
-names$male[table(names$male)[names$male]>=10]
-subset(names, table(names$male)[names$male] >= 30)
-
-subset(names, ave(VALUE, FACTOR, FUN = length) >= 3)
-
-a=c("Alice","Alice","Alice","Alice","Bob","Bob")
-unique(names$male)
-length(which(names$male=="AHMET")) 
-
-names$male[names(table(names$male))>10]
-a[names(a)==435]
-
-names[which(names$male %in% nm)
 ####FEMALE#####
 p<-ggplot(names,aes(x=Year,y=Rank)) + ylim(max(names$Rank),min(names$Rank)) + geom_line(data = names[which(names$Female %in% nm),], aes(group=Female, colour = Female), alpha = 1, size = 1)+geom_line(aes(group=Female),colour="#431600",alpha=0.1)+ opts(title = "Female Baby Name Popularity Since 1950")+ opts(axis.text.x=theme_text(angle=-70),hjust=0)
 p
@@ -99,12 +75,12 @@ rm(p)
 name.min.max<-function(nm){
   data.frame(
     name = nm,
-    min = min(names[which(names$Female == nm),2]),
-    max = max(names[which(names$Female == nm),2]),
-    dif = max(names[which(names$Female == nm),2]) - min(names[which(names$Female == nm),2])
+    min = min(names[which(names$female == nm),2]),
+    max = max(names[which(names$female == nm),2]),
+    dif = max(names[which(names$female == nm),2]) - min(names[which(names$female == nm),2])
   )
 }
-name.list<-unique(names$Female)
+name.list<-unique(names$female)
 out<-lapply(X = as.list(name.list), FUN = name.min.max)
 out <- do.call("rbind", out)
 female.dif<-out[order(-out$dif),]
@@ -112,11 +88,11 @@ female.dif<-out[order(-out$dif),]
 nm<-as.character(female.dif[1:10,1])
 
 #Plot
-p<-ggplot(names,aes(x=Year,y=Rank)) 
-p <- p + ylim(max(names$Rank),min(names$Rank)) 
-p <- p + geom_line(data = names[which(names$Female %in% nm),], aes(group=Female, colour = Female), alpha = 1, size = 1)
+p<-ggplot(names,aes(x=year,y=rank)) 
+p <- p + ylim(max(names$rank),min(names$rank)) 
+p <- p + geom_line(data = names[which(names$female %in% nm),], aes(group=female, colour = female), alpha = 1, size = 1)
 p <- p + opts(title = "Top Movers")
-p <- p + facet_wrap(~Female)
+p <- p + facet_wrap(~female)
 p
 `Delt.Absolute` <-
   function(x1,x2=NULL,k=0,type=c('arithmetic','log'))
