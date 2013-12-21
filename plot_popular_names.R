@@ -22,35 +22,6 @@ p<- ggplot(names,aes(x=year,y=rank)) +
     theme(legend.position = "none") 
 p
 
-###MULTIPLE PEOPLE####
-###MALE####
-
-top_names<-rownames(table(names$male))[as.numeric(table(names$male))>8]
-#top_names<-c("YUNUS","EGE","FURKAN","YUSUF")  
-subset_data<-names[which(names$male %in% top_names),]
-
-
-p<- ggplot(subset_data,aes(x=year,y=rank)) + 
-    geom_line(aes(group=male, colour =male_rank_change), alpha = 1, size = 1) + 
-    ylab("Sıralama") + xlab("Yıl") +
-    scale_x_continuous(expand = c(0,0), breaks=c(1960,1980,2000,2012)) + scale_y_reverse(expand=c(0,1),breaks=c(1,20,40,60,80,100)) +
-    facet_wrap(~male, ncol =6) +
-    scale_colour_gradient(low="red", high="green1", name = "Sıralama\nDeğişimi") 
-#p
-ggsave(file="./grafikler/erkek_isim_trend.svg", plot=p, width=12, height=30, limitsize=FALSE)
-
-#FEMALE
-top_names<-rownames(table(names$female))[as.numeric(table(names$female))>9]
-subset_data<-names[which(names$female %in% top_names),]
-
-p<- ggplot(subset_data,aes(x=year,y=rank)) + 
-    geom_line(aes(group=female, colour = female_rank_change), alpha = 1, size = 1) + 
-    ylab("Sıralama") + xlab("Yıl") +
-    scale_x_continuous(expand = c(0,0), breaks=c(1960,1980,2000,2012)) + scale_y_reverse(expand=c(0,1),breaks=c(1,20,40,60,80,100)) +
-    facet_wrap(~female, ncol =6) +
-    scale_colour_gradient(low="red", high="green1", name = "Sıralama\nDeğişimi") 
-#p
-ggsave(file="./grafikler/kadin_isim_trend.svg", plot=p, width=12, height=30, limitsize=FALSE)
 
 
 ####FEMALE#####
