@@ -4,7 +4,7 @@ library(ggplot2)
 source("name_functions.R")
 
 ###Single Female Name#####
-nm<-"DERYA" #Enter Female Name
+nm<-"Derya" #Enter Female Name
 
 p<- ggplot(names,aes(x=year,y=rank))+ 
     ylim(max(names$rank),min(names$rank)) + # Flip the Y axis
@@ -14,7 +14,7 @@ p<- ggplot(names,aes(x=year,y=rank))+
 p
 
 ####Single Male Name####
-nm<-c("AYAZ")
+nm<-c("Ayaz")
 p<- ggplot(names,aes(x=year,y=rank)) + 
     ylim(max(names$rank),min(names$rank)) + 
     geom_line(data = names[which(names$male == nm),], aes(group=male),colour = "Blue", alpha = 1) + 
