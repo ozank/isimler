@@ -12,9 +12,9 @@ subset_data<-names[which(names$male %in% top_names),]
 p<- ggplot(subset_data,aes(x=year,y=rank)) + 
   geom_line(aes(group=male, colour =male_rank_change), alpha = 1, size = 1) + 
   ylab("SIRALAMA") + xlab("YIL") +
-  scale_x_continuous(expand = c(0,0), breaks=c(1960,1980,2000,2013)) + scale_y_reverse(expand=c(0,1),breaks=c(1,20,40,60,80,100)) +
+  scale_x_continuous(expand = c(0,0), breaks=c(1960,1980,2000,2014)) + scale_y_reverse(expand=c(0,1),breaks=c(1,20,40,60,80,100)) +
   facet_wrap(~male, ncol =6) +
-  ggtitle("POPÜLER ERKEK İSİMLERİ 1950-2012") + 
+  ggtitle("POPÜLER ERKEK İSİMLERİ 1950-2014") + 
   scale_colour_gradient(low="red", high="green1", name = "Sıralama\nDeğişimi") 
 #Add footnote
 library(gridExtra)
@@ -37,9 +37,9 @@ subset_data<-names[which(names$female %in% top_names),]
 p<- ggplot(subset_data,aes(x=year,y=rank)) + 
   geom_line(aes(group=female, colour = female_rank_change), alpha = 1, size = 1) + 
   ylab("SIRALAMA") + xlab("YIL") +
-  scale_x_continuous(expand = c(0,0), breaks=c(1960,1980,2000,2013)) + scale_y_reverse(expand=c(0,1),breaks=c(1,20,40,60,80,100)) +
+  scale_x_continuous(expand = c(0,0), breaks=c(1960,1980,2000,2014)) + scale_y_reverse(expand=c(0,1),breaks=c(1,20,40,60,80,100)) +
   facet_wrap(~female, ncol =6) +
-  ggtitle("POPÜLER KADIN İSİMLERİ 1950-2012") + 
+  ggtitle("POPÜLER KADIN İSİMLERİ 1950-2014") + 
   scale_colour_gradient(low="red", high="green1", name = "Sıralama\nDeğişimi") 
 #Add footnote
 library(gridExtra)
